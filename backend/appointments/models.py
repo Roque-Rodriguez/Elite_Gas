@@ -5,7 +5,7 @@ from authentication.models import User
 class Appointment(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     date_time = models.DateTimeField()
-    message = models.TextField()
+    message = models.TextField(max_length=200)
     is_complete = models.BooleanField(default=False)
     is_approved = models.BooleanField(default=False)
 

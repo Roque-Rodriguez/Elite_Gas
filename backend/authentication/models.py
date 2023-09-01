@@ -1,9 +1,14 @@
-# from django.db import models
+from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
-    pass
+    address = models.CharField(max_length=200, default= "None")
+    number = models.IntegerField(default=0)
+    isCS = models.BooleanField(default=False)
+    isSales = models.BooleanField(default=False)
+   # isAdmin = models.BooleanField(default=False)  Come back to this if I have time
+    isCustomer = models.BooleanField(default=False)
     '''
     This is a custom version of the built in User class
     It contains all of the built in fields and functionality of the standard User
