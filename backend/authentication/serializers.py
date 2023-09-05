@@ -28,6 +28,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True, validators=[
         UniqueValidator(queryset=User.objects.all())])
 
+    username = serializers.CharField(write_only=True, required=True)
+
     password = serializers.CharField(
         write_only=True, required=True, validators=[validate_password])
 
@@ -44,15 +46,30 @@ class RegistrationSerializer(serializers.ModelSerializer):
                   'is_sales', 'is_customer', 'address', 'number']
 
     def create(self, validated_data):
-        user = User.objects.create_user(
+         user = User.objects.create(
+            username=validated_data['username'],
             email=validated_data['email'],
-            password=validated_data['password'],
-            is_cs=validated_data["is_cs"]
+            first_name=validated_data['first_name'],
+            last_name=validated_data['last_name'],
+            is_sales=validated_data['is_sales'],
+            is_customer=validated_data['is_customer'],
+            is_cs=validated_data['is_cs'],
+            address=validated_data['address'],
+            number=validated_data['number']
+            
         )
-        user.is_cs = validated_data.get('is_cs', False)
-        user.is_sales = validated_data.get('is_sales', False)
-        user.is_customer = validated_data.get('is_customer', True)
-        user.address = validated_data.get('address', '')
-        user.number = validated_data.get('number', '')
-        user.save()
-        return user
+         User.set_password(validated_data['password'])
+         user.save() 
+         return user
+  #      user = User.objects.create_user(
+  #          email=validated_data['email'],
+  #          password=validated_data['password'],
+  #          is_cs=validated_data["is_cs"]
+   #     )
+  #     user.is_cs = validated_data.get('is_cs', False)
+  #      user.is_sales = validated_data.get('is_sales', False)
+  #      user.is_customer = validated_data.get('is_customer', True)
+  #      user.address = validated_data.get('address', '')
+  #      user.number = validated_data.get('number', '')
+
+      

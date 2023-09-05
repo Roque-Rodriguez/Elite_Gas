@@ -18,7 +18,7 @@ def manage_appointment(request, pk):
     if request.method == 'GET' or request.method == 'POST':
         # Allow authenticated users to GET and POST
         serializer = AppointmentSerializer(appointment)
-        return Response(serializer.data)
+        return Response(serializer.data)      # Seperate the GET and POST 
 
     if request.method == 'DELETE':
         user = request.user
