@@ -18,7 +18,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token["is_cs"] = user.is_cs
         token["is_sales"] = user.is_sales
         token["is_customer"] = user.is_customer
-        token["address"] = user.adress
+        token["address"] = user.address
         token["number"] = user.number
 
         return token
@@ -28,7 +28,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True, validators=[
         UniqueValidator(queryset=User.objects.all())])
 
-    username = serializers.CharField(write_only=True, required=True)
+    
 
     password = serializers.CharField(
         write_only=True, required=True, validators=[validate_password])
@@ -42,7 +42,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['email', 'password', 'is_cs',
+        fields = ['username','email', 'password','first_name', 'last_name', 'is_cs',
                   'is_sales', 'is_customer', 'address', 'number']
 
     def create(self, validated_data):
@@ -58,7 +58,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
             number=validated_data['number']
             
         )
-         User.set_password(validated_data['password'])
+         user.set_password(validated_data['password'])
          user.save() 
          return user
   #      user = User.objects.create_user(

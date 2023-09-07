@@ -1,10 +1,11 @@
 from django.urls import path
 from . import views
-from .views import manage_appointment
+from .views import create_appointment, get_appointments, get_appointment, delete_appointment
 
 
 urlpatterns = [
-    path(' ', views.manage_appointment, name='create-appointment'),
-    path('<int:pk>/', views.manage_appointment, name='get-appointment'),
-    path('<int:pk>/delete/', views.manage_appointment, name='delete-appointment'),
+    path('create/', views.create_appointment, name='create-appointment'),
+    path('all/', views.get_appointments, name='get-all-appointments'),
+    path('<int:pk>/', views.get_appointment, name='get-appointment'),
+    path('delete/<int:pk>/', views.delete_appointment, name='delete-appointment'),
 ]

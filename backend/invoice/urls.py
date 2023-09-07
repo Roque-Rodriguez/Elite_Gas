@@ -1,9 +1,10 @@
 from django.urls import path
 from . import views
-from .views import manage_invoice
+from .views import get_invoices, create_invoice, get_invoice_detail, delete_invoice
 
 urlpatterns = [
-    path(' ', views.manage_invoice, name='create-invoice'),
-    path('<int:pk>/', views.manage_invoice, name='get-invoice'),
-    path('<int:pk>/delete/', views.manage_invoice, name='delete-invoice'),
+    path('all/', views.get_invoices, name='get all'),
+    path('post/', views.create_invoice, name='create-invoice'),
+    path('<int:pk>/', views.get_invoice_detail, name='get-invoice'),
+    path('delete/<int:pk>/', views.delete_invoice, name='delete-invoice'),
 ]
