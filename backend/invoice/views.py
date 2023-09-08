@@ -43,6 +43,25 @@ def create_invoice(request):
     return Response(status=status.HTTP_403_FORBIDDEN)
 
 
+@api_view(['PUT'])  # Change the method to PUT
+@permission_classes([IsAuthenticated])
+def update_invoice(request, pk):  # Accept 'pk' parameter
+    try:
+        invoice = Invoice.objects.get(pk=pk)
+    except Invoice.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    user = request.user
+
+    if user.is_cs or user.is_sales:
+        serializer = InvoiceSerializer(invoice, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(status=status.HTTP_403_FORBIDDEN)
+
+
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def delete_invoice(request, pk):
