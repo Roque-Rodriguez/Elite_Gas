@@ -4,7 +4,7 @@ import AddInvoiceForm from "../../components/Invoice/CreateInvoice"; // Import t
 
 function SalesHome() {
   const [showInvoices, setShowInvoices] = useState(false);
-  const [showAddForm, setShowAddForm] = useState(false); // State to control the visibility of the form
+  const [showAddForm, setShowAddForm] = useState(false);
 
   const toggleInvoices = () => {
     setShowInvoices(!showInvoices);
@@ -21,9 +21,7 @@ function SalesHome() {
         {showInvoices ? "Hide Invoices" : "View Invoices"}
       </button>
       {showInvoices && <InvoiceList />}
-      {/* Display Invoice component when showInvoices is true */}
 
-      {/* Add a button to toggle the form */}
       <button onClick={toggleAddForm}>
         {showAddForm ? "Hide Add Invoice Form" : "Add New Invoice"}
       </button>

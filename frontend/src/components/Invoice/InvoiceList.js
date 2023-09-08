@@ -90,20 +90,22 @@ const InvoiceList = () => {
 
 const handleSaveInvoice = (invoiceId) => {
   const updatedInvoiceData = {
+    invoice_number: editedInvoiceData.invoice_number, // Correct field name
     date: editedInvoiceData.date,
     job: editedInvoiceData.job,
     description: editedInvoiceData.description,
-    price: editedInvoiceData.price, // Correct field name
+    price: editedInvoiceData.price,
     total: editedInvoiceData.total,
-    user: editedInvoiceData.user, // Assuming user is an object, not just an ID
+    user: editedInvoiceData.user, // Include the user data if it's required
     customer_username: editedInvoiceData.customer_username,
   };
+
 
   if (!token) {
     console.error("Bearer token not found.");
     return;
   }
-debugger
+
   axios
     .put(
       `http://localhost:8000/api/invoice/put/${invoiceId}/`,
@@ -114,16 +116,19 @@ debugger
         },
       }
     )
-    .then(() => {
-      console.log(updatedInvoiceData);
-      console.log(`Updated invoice with ID: ${invoiceId}`);
-      setEditingInvoice(null);
+    .then((response) => {
+      if (response && response.data) {
+        console.log(response.data);
+        console.log(`Updated invoice with ID: ${invoiceId}`);
+        setEditingInvoice(null);
+      } else {
+        console.error("Invalid response format:", response);
+      }
     })
     .catch((error) => {
-      console.error(`Error updating invoice with ID: ${invoiceId}`, error);
+      console.error(`Error updating invoice with ID: ${invoiceId}`, error.response.data);
     });
 };
-
 
 
   const handleInputChange = (e) => {
@@ -156,6 +161,13 @@ debugger
                 <div>
                   {editingInvoice === invoice.id ? (
                     <div>
+                      <label>Invoice:</label>
+                      <input
+                        type="text"
+                        name="invoice_number"
+                        value={editedInvoiceData.invoice_number}
+                        onChange={handleInputChange}
+                      />
                       <label>Date:</label>
                       <input
                         type="text"
@@ -197,11 +209,13 @@ debugger
                     </div>
                   ) : (
                     <div>
+                      <p>Invoice: {invoice.invoice_number}</p>
                       <p>Date: {invoice.date}</p>
                       <p>Job: {invoice.job}</p>
                       <p>Description: {invoice.description}</p>
                       <p>Amount: {invoice.price}</p>
                       <p>Total: {invoice.total}</p>
+                      <p>User: {user.id}</p>
                       {user && (user.is_sales || user.is_cs) && (
                         <div>
                           <button
