@@ -15,6 +15,12 @@ function setUserObject(user) {
     username: user.username,
     id: user.user_id,
     first_name: user.first_name,
+    is_cs: user.is_cs,
+    is_sales: user.is_sales,
+    is_customer: user.is_customer,
+    address: user.address,
+    number: user.number
+    
   };
 }
 
@@ -35,6 +41,11 @@ export const AuthProvider = ({ children }) => {
         email: registerData.email,
         first_name: registerData.firstName,
         last_name: registerData.lastName,
+        is_cs: registerData.is_cs,
+        is_sales: registerData.is_sales,
+        is_customer: registerData.is_customer,
+        address: registerData.address,
+        number: registerData.number,
       };
       let response = await axios.post(`${BASE_URL}/register/`, finalData);
       if (response.status === 201) {
@@ -50,6 +61,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const loginUser = async (loginData) => {
+    debugger
     try {
       let response = await axios.post(`${BASE_URL}/login/`, loginData);
       if (response.status === 200) {
@@ -58,6 +70,10 @@ export const AuthProvider = ({ children }) => {
         let loggedInUser = jwtDecode(response.data.access);
         setUser(setUserObject(loggedInUser));
         setIsServerError(false);
+        console.log(loggedInUser)
+      
+
+
         navigate("/");
       } else {
         navigate("/register");

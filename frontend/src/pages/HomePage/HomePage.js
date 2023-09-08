@@ -1,6 +1,9 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
+import CustomerServiceHome from "./CustomerServiceHome";
+import CustomerHome from "./CustomerHome";
+import SalesHome from "./SalesHome";
 
 import axios from "axios";
 
@@ -13,6 +16,7 @@ const HomePage = () => {
 
   useEffect(() => {
     const fetchCars = async () => {
+      //This fetches the cars of the logged in user. Use the views.py in cars app as an example
       try {
         let response = await axios.get("http://127.0.0.1:8000/api/cars/", {
           headers: {
@@ -26,6 +30,22 @@ const HomePage = () => {
     };
     fetchCars();
   }, [token]);
+
+    if(user.is_cs === true){
+      return <CustomerServiceHome/>
+   } else if(user.is_sales === true){
+      return <SalesHome/>
+   } else if(user.is_customer === true){
+      return <CustomerHome/>
+   }
+
+
+  // if(user.is_customer === true){
+  //   <button>Pay bill</button>
+  // }else{
+  //   <h1></h1>
+  // }
+
   return (
     <div className="container">
       <h1>Home Page for {user.username}!</h1>

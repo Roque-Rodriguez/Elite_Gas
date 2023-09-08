@@ -40,7 +40,7 @@ def get_appointment(request, pk):
 @permission_classes([IsAuthenticated])
 def create_appointment(request):
     user = request.user
-    if user.is_cs or user.is_sales:
+    if user.is_cs or user.is_sales or user.is_customer:
         serializer = AppointmentSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()

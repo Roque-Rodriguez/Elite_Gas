@@ -10,6 +10,11 @@ const RegisterPage = () => {
     password: "",
     firstName: "",
     lastName: "",
+    is_sales:false,
+    is_cs:false,
+    is_customer:false,
+    address: "",
+    number: "",
   };
   const [formData, handleInputChange, handleSubmit] = useCustomForm(
     defaultValues,
@@ -25,24 +30,6 @@ const RegisterPage = () => {
             type="text"
             name="username"
             value={formData.username}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label>
-          First Name:{" "}
-          <input
-            type="text"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label>
-          Last Name:{" "}
-          <input
-            type="text"
-            name="lastName"
-            value={formData.lastName}
             onChange={handleInputChange}
           />
         </label>
@@ -68,6 +55,70 @@ const RegisterPage = () => {
           NOTE: Make this an uncommon password with characters, numbers, and
           special characters!
         </p>
+        <label>
+          First Name:{" "}
+          <input
+            type="text"
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleInputChange}
+          />
+        </label>
+        <label>
+          Last Name:{" "}
+          <input
+            type="text"
+            name="lastName"
+            value={formData.lastName}
+            onChange={handleInputChange}
+          />
+        </label>
+        <label>
+          Check here is your Customer Service:
+          <input
+            type="checkbox"
+            name="is_cs"
+            value={formData.is_cs}
+            onChange={handleInputChange}
+          />
+        </label>
+        <label>
+          Check here is your Sales:
+          <input
+            type="checkbox"
+            name="is_sales"
+            value={formData.is_sales}
+            onChange={handleInputChange}
+          />
+        </label>
+        <label>
+          Check here is your a Customer:
+          <input
+            type="checkbox"
+            name="is_customer"
+            value={formData.is_customer}
+            onChange={handleInputChange}
+          />
+        </label>
+        <label>
+          Address:{" "}
+          <input
+            type="text"
+            name="address"
+            value={formData.address}
+            onChange={handleInputChange}
+          />
+        </label>
+        <label>
+          Number:{" "}
+          <input
+            type="text"
+            name="number"
+            value={formData.number}
+            onChange={handleInputChange}
+          />
+        </label>
+
         <button>Register!</button>
       </form>
     </div>
