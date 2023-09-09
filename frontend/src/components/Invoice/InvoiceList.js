@@ -193,7 +193,7 @@ const handleSaveInvoice = (invoiceId) => {
                       <input
                         type="text"
                         name="price"
-                        value={editedInvoiceData.amount}
+                        value={editedInvoiceData.price}
                         onChange={handleInputChange}
                       />
                       <label>Total:</label>
@@ -213,7 +213,7 @@ const handleSaveInvoice = (invoiceId) => {
                       <p>Date: {invoice.date}</p>
                       <p>Job: {invoice.job}</p>
                       <p>Description: {invoice.description}</p>
-                      <p>Amount: {invoice.price}</p>
+                      <p>Price: {invoice.price}</p>
                       <p>Total: {invoice.total}</p>
                       <p>User: {user.id}</p>
                       {user && (user.is_sales || user.is_cs) && (

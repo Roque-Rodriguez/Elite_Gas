@@ -6,31 +6,23 @@ from .models import Appointment
 from .serializers import AppointmentSerializer
 
 
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework import status
-from .models import Appointment
-from .serializers import AppointmentSerializer
-
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_appointments(request):
-    user = request.user  # Get the user making the request
-    print(user)
-    if user.is_cs or user.is_sales:
+    try:
         appointments = Appointment.objects.all()
         serializer = AppointmentSerializer(appointments, many=True)
         return Response(serializer.data)
+    except Appointment.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_appointment(request, pk):
+def user_appointments(request, user_id):
     try:
-        appointment = Appointment.objects.get(pk=pk)
-        serializer = AppointmentSerializer(appointment)
+        appointments = Appointment.objects.filter(user=user_id)
+        serializer = AppointmentSerializer(appointments, many=True)
         return Response(serializer.data)
     except Appointment.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
@@ -47,6 +39,26 @@ def create_appointment(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     return Response(status=status.HTTP_403_FORBIDDEN)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_appointment(request, pk):
+    user = request.user
+    try:
+        appointment = Appointment.objects.get(pk=pk)
+    except Appointment.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if not (user.is_cs or user.is_sales or user.is_customer):
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+    if request.method == 'PUT':
+        serializer = AppointmentSerializer(appointment, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['DELETE'])

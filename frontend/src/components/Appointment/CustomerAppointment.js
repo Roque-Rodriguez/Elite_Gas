@@ -4,7 +4,6 @@ import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import "./Appt.css";
 
-
 function formatDateTime(dateTimeString) {
   const date = new Date(dateTimeString);
   const year = date.getFullYear();
@@ -31,15 +30,6 @@ function Appointments() {
     is_sales_or_cs: "is_sales", // Default value
   });
 
-  const [editedAppointmentData, setEditedAppointmentData] = useState({
-    id: null,
-    date_time: "",
-    message: "",
-    is_complete: false,
-    is_approved: false,
-    user: user.id,
-  });
-
   useEffect(() => {
     if (!token) {
       console.error("Bearer token not found.");
@@ -49,7 +39,7 @@ function Appointments() {
     const fetchAppointments = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/appointments/all/",
+          `http://localhost:8000/api/appointments/user/${user.id}/`, // Fetch appointments for the logged-in user
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -63,93 +53,7 @@ function Appointments() {
     };
 
     fetchAppointments();
-  }, [token]);
-
-  const handleDeleteAppointment = async (id) => {
-    if (!token || !(user.is_sales || user.is_cs)) {
-      console.error("Unauthorized to delete an appointment.");
-      return;
-    }
-
-    try {
-      const response = await axios.delete(
-        `http://localhost:8000/api/appointments/delete/${id}/`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (response && response.status === 204) {
-        // Remove the deleted appointment from the list
-        setAppointments((prevAppointments) =>
-          prevAppointments.filter((appointment) => appointment.id !== id)
-        );
-      } else {
-        console.error(
-          "Error deleting appointment. Invalid response:",
-          response
-        );
-      }
-    } catch (error) {
-      console.error(`Error deleting appointment with ID: ${id}`, error);
-    }
-  };
-
-  const handleEditAppointment = (appointment) => {
-    setEditedAppointmentData(appointment);
-    setExpandedAppointment(appointment.id); // Expand the edit field
-  };
-
-  const handleUpdateAppointment = async () => {
-    if (!token || !(user.is_sales || user.is_cs)) {
-      console.error("Unauthorized to update an appointment.");
-      return;
-    }
-
-    try {
-      const response = await axios.put(
-        `http://localhost:8000/api/appointments/put/${editedAppointmentData.id}/`,
-        editedAppointmentData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (response && response.data) {
-        console.log(response.data);
-        // Update the appointment list with the updated data
-        setAppointments((prevAppointments) =>
-          prevAppointments.map((appointment) =>
-            appointment.id === editedAppointmentData.id
-              ? response.data
-              : appointment
-          )
-        );
-        setEditedAppointmentData({
-          id: null,
-          date_time: "",
-          message: "",
-          is_complete: false,
-          is_approved: false,
-          user: user.id,
-        });
-
-        // Close the edit field by setting expandedAppointment to null
-        setExpandedAppointment(null);
-      } else {
-        console.error("Invalid response format:", response);
-      }
-    } catch (error) {
-      console.error(
-        `Error updating appointment with ID: ${editedAppointmentData.id}`,
-        error
-      );
-    }
-  };
+  }, [token, user.id]);
 
   const handleCreateAppointment = async () => {
     if (!token || !(user.is_sales || user.is_cs || user.is_customer)) {
@@ -273,81 +177,15 @@ function Appointments() {
           >
             <h3>Date and Time: {formatDateTime(appointment.date_time)}</h3>
             <p>Message: {appointment.message}</p>
-            <p>Type: {appointment.type}</p>{" "}
+            <p>
+              Type:{" "}
+              {appointment.is_sales_or_cs === "is_sales"
+                ? "Sales"
+                : "Customer Service"}
+            </p>
             {/* Display the appointment type here */}
             <p>Is Complete: {appointment.is_complete ? "Yes" : "No"}</p>
             <p>Is Approved: {appointment.is_approved ? "Yes" : "No"}</p>
-            {user.is_sales || user.is_cs ? (
-              <div>
-                <button onClick={() => handleDeleteAppointment(appointment.id)}>
-                  Delete
-                </button>
-                <button onClick={() => handleEditAppointment(appointment)}>
-                  Edit
-                </button>
-              </div>
-            ) : null}
-            {expandedAppointment === appointment.id && (
-              <div
-                onClick={(e) => {
-                  // Prevent the click event from propagating to the parent div
-                  e.stopPropagation();
-                }}
-              >
-                <h3>Edit Appointment</h3>
-                <input
-                  type="text"
-                  name="date_time"
-                  value={editedAppointmentData.date_time}
-                  onChange={(e) =>
-                    setEditedAppointmentData({
-                      ...editedAppointmentData,
-                      date_time: e.target.value,
-                    })
-                  }
-                />
-                <input
-                  type="text"
-                  name="message"
-                  value={editedAppointmentData.message}
-                  onChange={(e) =>
-                    setEditedAppointmentData({
-                      ...editedAppointmentData,
-                      message: e.target.value,
-                    })
-                  }
-                />
-                <label>
-                  Is Complete:
-                  <input
-                    type="checkbox"
-                    name="is_complete"
-                    checked={editedAppointmentData.is_complete} // Use the edited data
-                    onChange={() =>
-                      setEditedAppointmentData((prevData) => ({
-                        ...prevData,
-                        is_complete: !prevData.is_complete, // Toggle the value
-                      }))
-                    }
-                  />
-                </label>
-                <label>
-                  Is Approved:
-                  <input
-                    type="checkbox"
-                    name="is_approved"
-                    checked={editedAppointmentData.is_approved} // Use the edited data
-                    onChange={() =>
-                      setEditedAppointmentData((prevData) => ({
-                        ...prevData,
-                        is_approved: !prevData.is_approved, // Toggle the value
-                      }))
-                    }
-                  />
-                </label>
-                <button onClick={handleUpdateAppointment}>Update</button>
-              </div>
-            )}
           </div>
         ))}
       </div>

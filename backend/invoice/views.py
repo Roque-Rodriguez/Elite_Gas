@@ -12,6 +12,18 @@ from rest_framework import generics
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])  # Adjust permissions as needed
+def get_invoices_by_user(request, user_id):
+    try:
+        # Query invoices by user_id
+        invoices = Invoice.objects.filter(user_id=user_id)
+        invoice_data = [{'id': invoice.id, 'Invoice Number': invoice.invoice_number, 'Date': invoice.date, 'Job': invoice.job, 'Description': invoice.description, 'Price': invoice.price, 'Total': invoice.total} for invoice in invoices]
+        return Response({'invoices': invoice_data})
+    except Exception as e:
+        return Response({'error': str(e)}, status=500)
+
+
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_invoices(request):
     invoices = Invoice.objects.all()

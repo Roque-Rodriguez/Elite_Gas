@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import InvoiceList from "../../components/Invoice/InvoiceList";
-import AddInvoiceForm from "../../components/Invoice/CreateInvoice"; // Import the AddInvoiceForm component
+import AddInvoiceForm from "../../components/Invoice/CreateInvoice";
+import Appointment from "../../components/Appointment/Appointment"; // Import the Appointment component
 
 function SalesHome() {
   const [showInvoices, setShowInvoices] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [showAppointments, setShowAppointments] = useState(false); // Add this state variable
 
   const toggleInvoices = () => {
     setShowInvoices(!showInvoices);
@@ -12,6 +14,10 @@ function SalesHome() {
 
   const toggleAddForm = () => {
     setShowAddForm(!showAddForm);
+  };
+
+  const toggleAppointments = () => {
+    setShowAppointments(!showAppointments);
   };
 
   return (
@@ -26,8 +32,15 @@ function SalesHome() {
         {showAddForm ? "Hide Add Invoice Form" : "Add New Invoice"}
       </button>
 
+      <button onClick={toggleAppointments}>
+        {showAppointments ? "Hide Appointments" : "View Appointments"}
+      </button>
+
       {/* Conditionally render the AddInvoiceForm component */}
       {showAddForm && <AddInvoiceForm />}
+
+      {/* Conditionally render the Appointment component */}
+      {showAppointments && <Appointment />}
     </div>
   );
 }

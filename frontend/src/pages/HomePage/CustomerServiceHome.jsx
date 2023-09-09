@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import InvoiceList from "../../components/Invoice/InvoiceList";
 import AddInvoiceForm from "../../components/Invoice/CreateInvoice"; // Import the AddInvoiceForm component
+import Demo from "../../components/Appointment/Appointment"; // Import the Demo component
 
 function CustomerServiceHome() {
   const [showInvoices, setShowInvoices] = useState(false);
@@ -28,6 +29,9 @@ function CustomerServiceHome() {
 
       {/* Conditionally render the AddInvoiceForm component */}
       {showAddForm && <AddInvoiceForm />}
+
+      {/* Include the Demo component */}
+      <Demo />
     </div>
   );
 }
