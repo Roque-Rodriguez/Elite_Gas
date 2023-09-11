@@ -17,6 +17,7 @@ def get_appointments(request):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
 
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def user_appointments(request, user_id):

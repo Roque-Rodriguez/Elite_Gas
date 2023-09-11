@@ -40,6 +40,7 @@ function Appointments() {
     user: user.id,
   });
 
+  
   useEffect(() => {
     if (!token) {
       console.error("Bearer token not found.");

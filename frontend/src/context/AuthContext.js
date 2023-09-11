@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const loginUser = async (loginData) => {
-    debugger
+    
     try {
       let response = await axios.post(`${BASE_URL}/login/`, loginData);
       if (response.status === 200) {

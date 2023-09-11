@@ -10,4 +10,5 @@ urlpatterns = [
     path('put/<int:pk>/', update_appointment, name='update-appointment'),
     path('delete/<int:pk>/', delete_appointment, name='delete-appointment'),
     path('user/<int:user_id>/', user_appointments, name='user_appointments'),
+    
 ]

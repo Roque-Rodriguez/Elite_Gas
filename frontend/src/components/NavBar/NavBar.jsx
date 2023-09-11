@@ -10,9 +10,19 @@ const Navbar = () => {
   return (
     <div className="navBar">
       <ul>
-        <li className="brand">
-          <Link to="/" style={{ textDecoration: "none", color: "white" }}>
-            <b>React/Django JWT</b>
+        <li className="brand" style={{ listStyleType: "none" }}>
+          <Link
+            to="/"
+            style={{
+              textDecoration: "none",
+              color: "white",
+              fontFamily: "Arial, sans-serif",
+              fontWeight: "bold",
+              fontSize: "24px",
+              textDecoration: "none",
+            }}
+          >
+            Elite Gas
           </Link>
         </li>
         <li>

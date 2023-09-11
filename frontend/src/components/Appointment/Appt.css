@@ -14,7 +14,7 @@ body {
 
 .container {
   max-width: 960px;
-  margin: 0 auto;
+  margin: 20rem auto;
   padding: 20px;
 }
 
@@ -25,7 +25,7 @@ h2 {
 
 /* Form Styles */
 form {
-  background-color: #fff;
+  background-color: #2d09b1;
   border: 1px solid #ccc;
   padding: 20px;
   border-radius: 5px;
@@ -68,7 +68,7 @@ button:hover {
 }
 
 .appointment-item {
-  background-color: #fff;
+  background-color: #4709bb;
   border: 1px solid #ccc;
   padding: 20px;
   border-radius: 5px;
@@ -99,7 +99,7 @@ button:hover {
 
 /* Edit Appointment Styles */
 .appointment-item > div > div {
-  background-color: #f7f7f7;
+  background-color: #4709bb;
   border: 1px solid #ccc;
   padding: 20px;
   border-radius: 5px;

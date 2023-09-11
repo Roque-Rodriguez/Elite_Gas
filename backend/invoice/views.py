@@ -25,6 +25,14 @@ def get_invoices_by_user(request, user_id):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+def get_users(request):
+    users = User.objects.all()
+    # Use your User serializer here
+    serializer = UserSerializer(users, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_invoices(request):
     invoices = Invoice.objects.all()
     serializer = InvoiceSerializer(invoices, many=True)

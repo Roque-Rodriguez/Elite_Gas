@@ -73,7 +73,7 @@ const InvoiceList = () => {
   };
 
   const handleEditInvoice = (invoiceId) => {
-    debugger
+   
     setEditingInvoice(invoiceId);
     const invoiceToEdit = invoices.find((invoice) => invoice.id === invoiceId);
     setEditedInvoiceData({
@@ -150,7 +150,7 @@ const handleSaveInvoice = (invoiceId) => {
               <h3
                 onClick={() => handleToggleInvoice(invoice.id)}
                 style={{
-                  color: "blue",
+                  color: "#f5f5f5",
                   textDecoration: "underline",
                   cursor: "pointer",
                 }}
@@ -285,7 +285,7 @@ export default InvoiceList;
 //   };
 
 //   const handleDeleteInvoice = (invoiceId) => {
-//     debugger;
+//    ;
 //     if (!token) {
 //       console.error("Bearer token not found.");
 //       return;
